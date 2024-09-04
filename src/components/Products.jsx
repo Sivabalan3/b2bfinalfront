@@ -14,7 +14,7 @@ const Products = () => {
         <Text className="text-xl font-bold border-b-2 pb-1 pr-4 border-black">
           Trending Products
         </Text>
-        <Link to={"/categories"}>
+        <Link to="/categories">
         <Button
           className="text-green-400 rounded-3xl border-2 p-1 pl-2 pr-2 border-green-400 "
           names={"View All"}
