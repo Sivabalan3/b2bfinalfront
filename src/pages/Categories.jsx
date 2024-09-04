@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Backend_url } from "../constant";
 
 export const Categories = ({ categories }) => {
   const navigate = useNavigate(); // Use useNavigate hook for navigation
@@ -18,7 +19,7 @@ export const Categories = ({ categories }) => {
           >
             {cat.image && (
               <img
-                src={`http://localhost:5000/api/image/${cat.image.split("/").pop()}`}
+                src={`${Backend_url}/api/image/${cat.image.split("/").pop()}`}
                 alt={cat.name}
                 className="h-32 w-32 object-cover mb-2 rounded-md"
               />

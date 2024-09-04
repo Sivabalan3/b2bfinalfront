@@ -27,7 +27,7 @@ import Profile from './pages/Profile';
 import {View1} from './pages/View1'
 import {View2} from './pages/View2'
 import {Seller} from './pages/Seller'
-import {Seller1} from './pages/Seller1'
+import {Orders} from './pages/Orders'
 import {History} from './pages/History'
 import {His1} from './pages/His1'
 import {Ship} from './pages/Ship'
@@ -85,7 +85,7 @@ function App() {
         <Route path='/view1' element={<View1/>} />
         <Route path='/view2' element={<View2/>} />
         <Route path='/sell' element={<Seller/>} />
-        <Route path='/sell1' element={<Seller1/>} />
+        <Route path='/orders' element={<Orders/>} />
         <Route path='/his' element={<History/>} />
         <Route path='/his1' element={<His1 />} />
         <Route path="/ship" element={<Ship/>} />
