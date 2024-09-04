@@ -30,7 +30,7 @@ const CreateProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const selectedCategory = categories.find(cat => cat._id === category)?.name;
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", price);
@@ -38,6 +38,7 @@ const CreateProduct = () => {
     formData.append("description", description);
     formData.append("brand", brand);
     formData.append("category", category);
+    formData.append("categories", selectedCategory);
     if (image) {
       formData.append("image", image);
     }

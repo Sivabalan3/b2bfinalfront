@@ -3,7 +3,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Welcome from './pages/Welcome';
-import { Categories } from './pages/Categories';
+import  {CategoryList}  from './pages/CategoryList';
 import { C1 } from './pages/C1';
 import { C2 } from './pages/C2';
 import { C3 } from './pages/C3';
@@ -55,7 +55,7 @@ function App() {
         <Route path="/home" element={user?<Home />:<Login/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path='/categories' element={<Categories/>} />
+        <Route path='/categories' element={<CategoryList/>} />
         <Route path='/shopping' element={<Shopping/>} />
         <Route path="/shopping/:productId" element={<Shopping/>} />
         <Route path='/c1' element={<C1/>} />
