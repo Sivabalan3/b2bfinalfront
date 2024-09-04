@@ -77,9 +77,26 @@ const ProductList = () => {
 
   const addToCart = (product) => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.push(product);
+    
+    // Check if the product already exists in the cart
+    const existingProductIndex = cart.findIndex(item => item._id === product._id);
+  
+    if (existingProductIndex !== -1) {
+      // Update quantity if the product already exists
+      cart[existingProductIndex].quantity += 1;
+      cart[existingProductIndex].totalPrice = (cart[existingProductIndex].price * cart[existingProductIndex].quantity).toFixed(2);
+    } else {
+      // Add new product to cart
+      const newProduct = {
+        ...product,
+        quantity: 1,
+        totalPrice: product.price.toFixed(2),
+      };
+      cart.push(newProduct);
+    }
+  
     localStorage.setItem('cart', JSON.stringify(cart));
-
+  
     Swal.fire({
       position: "center",
       icon: "success",
@@ -88,6 +105,7 @@ const ProductList = () => {
       timer: 1500
     });
   };
+  
 
   return (
     <>
