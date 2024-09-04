@@ -3,6 +3,7 @@ import NavBar from "../components/Navbar";
 import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import { Button } from "../components/alt/Button";
+import { useNavigate } from 'react-router-dom';
 
 const customStyles = {
   content: {
@@ -17,6 +18,7 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const Cart = () => {
+  const Navigate=useNavigate()
   const [cartItems, setCartItems] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -41,10 +43,10 @@ const Cart = () => {
   const handleSubmit = () => {
     // Retrieve the current cart from local storage
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Update only the selected product in the cart
+  
+    // Update the selected product in the cart
     const updatedCart = cart.map(item => {
-      if (item.id === currentProduct.id) {
+      if (item._id === currentProduct._id) {
         return {
           ...item,
           quantity,
@@ -53,11 +55,11 @@ const Cart = () => {
       }
       return item;
     });
-
+  
     // Save updated cart to local storage
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     setCartItems(updatedCart); // Update state to reflect changes
-
+  
     Swal.fire({
       position: "center",
       icon: "success",
@@ -66,9 +68,10 @@ const Cart = () => {
       showConfirmButton: false,
       timer: 2500,
     });
-
     closeModal();
+    Navigate("/shipping")
   };
+  
 
   // Calculate the total amount
   const totalAmount = currentProduct ? (currentProduct.price * quantity).toFixed(2) : 0;
