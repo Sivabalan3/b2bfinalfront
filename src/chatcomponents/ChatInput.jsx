@@ -39,7 +39,7 @@ export default function ChatInput({ handleSendMsg }) {
   }, [fileState]);
 
   return (
-    <div className="flex items-center sm:px-6 md:px-8 lg:px-12 gap-1 sm:gap-2 md:gap-2 absolute bottom-0 left-0 mb-2 resize-none bg-white">
+    <div className="flex w-full items-center sm:px-6 md:px-8 lg:px-12 gap-1 sm:gap-2 md:gap-2 absolute bottom-0 left-0 mb-2 resize-none bg-white">
       <div className="relative flex items-center text-black ">
         
         {/* {showEmojiPicker && (

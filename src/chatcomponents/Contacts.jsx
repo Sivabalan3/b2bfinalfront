@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Logo from "../assets/logo.jpg";
+import  { useState, useEffect } from "react";
 import Logout from "./Logout";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import {  useSelector } from "react-redux";
+import {FaHome} from "react-icons/fa";
+
 
 export default function Contacts({ currentUser, changeChat, onlineUserIds }) {
   const { userData } = useSelector(({ MODULES }) => MODULES);
@@ -22,55 +23,6 @@ export default function Contacts({ currentUser, changeChat, onlineUserIds }) {
     changeChat(contact);
   };
   return (
-    /*  <>
-      {currentUserImage && currentUserName && (
-        <Container>
-          <div className="brand">
-            <img src={Logo} alt="logo" />
-            <h3>B2BMART</h3>
-          </div>
-          <div className="contacts">
-            {userData && userData.map((contact, index) => {
-              return (
-                <div
-                  key={contact._id}
-                  className={`contact ${
-                    index === currentSelected ? "selected" : ""
-                  }`}
-                  style={{ borderLeft: `6px solid ${onlineUserIds[contact._id] ? "#00800096" : "#ff00004f" }`, 
-                           borderRight: `6px solid ${onlineUserIds[contact._id] ? "#00800096" : "#ff00004f" }`,
-                           display: currentUser._id===contact._id ? "none" : ""
-                        }}
-                  onClick={() => changeCurrentChat(index, contact)}
-                >
-                  <div className="avatar">
-                    <img
-                      src={`data:image/svg+xml;base64,${contact.avatarImage}`}
-                      alt=""
-                    />
-                  </div>
-                  <div className="username">
-                    <h3>{contact.username}</h3>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="current-user">
-            <div className="avatar">
-              <img
-                src={`data:image/svg+xml;base64,${currentUserImage}`}
-                alt="avatar"
-              />
-            </div>
-            <div className="username">
-              <h2>{currentUserName}</h2>
-            </div>
-            <Logout />
-          </div>
-        </Container>
-      )}
-    </> */
     <>
       <div className="mt-[-28px]">
         <input type="checkbox" className="peer hidden" id="sidebar-open" />
@@ -99,6 +51,9 @@ export default function Contacts({ currentUser, changeChat, onlineUserIds }) {
         >
           <div className="bg-gray-400 mt-5 py-4 pl-10 md:mt-10">
             <span className="">
+            <Link to="/home" className="absolute top-11 text-xl text-gray-800 ">
+          <FaHome />
+          </Link>
               <span className="ml-8 inline-flex h-8 w-8  align-bottom text-2xl font-bold text-gray-700">
                 B2Bmart
               </span>
