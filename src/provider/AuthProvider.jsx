@@ -13,26 +13,31 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(`${Backend_url}/api/auth/login`, { email, password });
+      console.log("API response:", response);
+      
       const { user, token } = response.data;
-
-      // Store the entire user object and token in localStorage
+  
+      // Store the user and token in localStorage
+      localStorage.setItem("chat-app-user", JSON.stringify(user));
       localStorage.setItem('user', JSON.stringify(user));
       if (token) {
         localStorage.setItem('token', token);
       }
-
+  
       // Update state
       setUser(user);
       setRole(user.role);
-
+  
       // Redirect based on user role
-      if (user.role === 'user' || user.role ==='admin') {
+      if (user.role === 'user' || user.role === 'admin' || user.role === 'superadmin') {
+        console.log("Navigating to /home");
         navigate('/home');
       }
     } catch (error) {
       console.error('Login failed', error);
     }
   };
+  
 
   const register = async (username, email, password, contactNo) => {
     try {
@@ -41,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 
       // Store user data
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("chat-app-user", JSON.stringify(user));
       setUser(user);
       setRole(user.role);
 
