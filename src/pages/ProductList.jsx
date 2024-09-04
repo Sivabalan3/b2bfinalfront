@@ -5,7 +5,7 @@ import NavBar from '../components/Navbar';
 import { FiShoppingCart } from 'react-icons/fi';
 import Modal from 'react-modal';
 import { Button } from "../components/alt/Button";
-import { View } from "../components/alt/View";
+import { Backend_url } from '../constant';
 
 const customStyles = {
   content: {
@@ -35,7 +35,7 @@ const ProductList = () => {
 
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/products');
+        const response = await axios.get(`${Backend_url}/api/products`);
         const allProducts = response.data.products;
 
         const filteredProducts = category 
@@ -130,7 +130,7 @@ const ProductList = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h3>
                 <img
-                  src={`http://localhost:5000/api/image/${product.image.split('/').pop()}`}
+                  src={`${Backend_url}/api/image/${product.image.split('/').pop()}`}
                   alt={product.name}
                   className="w-32 h-32 object-cover mb-4 rounded-md"
                 />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "../components/Navbar";
+import { Backend_url } from "../constant"; 
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
@@ -17,7 +18,7 @@ const CreateProduct = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/categories"
+          `{Backend_url}/api/categories`
         );
         setCategories(response.data);
       } catch (error) {
@@ -45,7 +46,7 @@ const CreateProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/product",
+        `${Backend_url}/api/product`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
