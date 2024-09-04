@@ -19,12 +19,18 @@ export const Orders = () => {
     fetchOrders();
   }, []);
 
-  const handleApprove = (orderId) => {
-    console.log(`Order ${orderId} approved`);
-  };
-
-  const handleReject = (orderId) => {
-    console.log(`Order ${orderId} rejected`);
+  const handleDeliveryUpdate = async (orderId) => {
+    try {
+      const response = await axios.put(`${Backend_url}/api/orders/${orderId}/deliver`);
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId ? { ...order, isDelivered: true } : order
+        )
+      );
+      console.log(`Order ${orderId} delivery status updated to true`);
+    } catch (error) {
+      console.error("Error updating delivery status:", error);
+    }
   };
 
   return (
@@ -49,31 +55,16 @@ export const Orders = () => {
               <p className="text-gray-600">Created At: {new Date(order.createdAt).toLocaleDateString()}</p>
               <p className="text-gray-600">Updated At: {new Date(order.updatedAt).toLocaleDateString()}</p>
               
-              {/* Approve/Reject Buttons
-              <div className="mt-4">
-                <button
-                  onClick={() => handleApprove(order._id)}
-                  className="text-white bg-green-500 hover:bg-green-700 font-medium rounded-full h-10 text-sm px-5 py-2 mr-2"
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => handleReject(order._id)}
-                  className="text-white bg-red-500 hover:bg-red-700 font-medium rounded-full h-10 text-sm px-5 py-2 mr-2"
-                >
-                  Reject
-                </button>
-              </div> */}
-
               {/* Status Buttons */}
               <div className="mt-4">
                 <button
+                  onClick={() => handleDeliveryUpdate(order._id)}
                   className={`text-white font-medium rounded-full h-10 text-sm px-5 py-2 mr-2 ${
                     order.isDelivered ? 'bg-green-500' : 'bg-gray-400'
                   }`}
                   disabled={order.isDelivered}
                 >
-                  Delivered
+                  {order.isDelivered ? "Delivered" : "Mark as Delivered"}
                 </button>
                 <button
                   className={`text-white font-medium rounded-full h-10 text-sm px-5 py-2 ${
