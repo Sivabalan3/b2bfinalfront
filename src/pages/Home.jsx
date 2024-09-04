@@ -1,4 +1,4 @@
-import Categories from "../components/Categories"
+import {CategoryList} from "./CategoryList"
 import NavBar from "../components/Navbar"
 import Products from "../components/Products"
 
@@ -8,7 +8,7 @@ const Home = () => {
     <>
     <NavBar name={"Hello Sai"} isHome={true}/>
     <Products />
-    <Categories />
+    <CategoryList />
     </>
   )
 }
