@@ -15,7 +15,7 @@ import { EditUser } from './pages/EditUser';
 import { C8 } from './pages/C8';
 import Shopping from './pages/Shopping';
 import Messages from './pages/Messages';
-import Chat from './pages/Chat';
+// import Chat from './pages/Chat';
 import Payments from './pages/Payments';
 import PaymentsDetailsPage from './pages/PaymentDetails';
 import { AuthProvider } from './provider/AuthProvider';
@@ -36,6 +36,8 @@ import Industry from "./pages/Industry"
 import CreateCategory from './pages/CreateCategory';
 import CreateProduct from './pages/createProduct';
 import ProductList from './pages/ProductList'
+import Chat from './chatpages/Chat';
+import SetAvataor from './chatpages/SetAvatar';
 function App() {
   const user = true
 
@@ -48,6 +50,7 @@ function App() {
         <Route path="/createcategory" element={<CreateCategory/>} />
         <Route path="/createproduct" element={<CreateProduct/>} />
         <Route path="/productlist" element={<ProductList/>} />
+        <Route path="/setAvatar" element={<SetAvataor/>} />
 
         <Route path="/home" element={user?<Home />:<Login/>} />
         <Route path="/login" element={<Login />} />
@@ -65,7 +68,7 @@ function App() {
         <Route path='/c8' element={<C8/>} />
         <Route path='/edit' element={<EditUser/>} />
         <Route path='/profile' element={<Profile/>} />
-        <Route path='/messages' element={<Messages />} />
+        <Route path='/chat' element={<Chat />} />
         <Route path='/payments' element={<Payments />} />
         <Route path='/notifications' element={<Notifications />} />
         <Route path='/paymentdata' element={<PaymentsDetailsPage />} />

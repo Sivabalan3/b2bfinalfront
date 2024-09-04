@@ -153,7 +153,7 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
               </li>
               <li className="flex items-center">
                 <FaEnvelope className="mr-3" />
-                <Link to="/messages" className="hover:underline">Messages</Link>
+                <Link to="/chat" className="hover:underline">Messages</Link>
               </li>
               <li className="flex items-center">
                 <FaBox className="mr-3" />
@@ -208,7 +208,7 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
               </li>
               <li className="flex items-center">
                 <FaEnvelope className="mr-3" />
-                <Link to="/messages" className="hover:underline">Messages</Link>
+                <Link to="/chat" className="hover:underline">Messages</Link>
               </li>
               <li className="flex items-center">
                 <FaBox className="mr-3" />
