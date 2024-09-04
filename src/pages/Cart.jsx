@@ -53,11 +53,10 @@ const Cart = () => {
           totalPrice: (currentProduct.price * quantity).toFixed(2),
         };
       }
-      return item;
     });
   
     // Save updated cart to local storage
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    localStorage.setItem('cartitems', JSON.stringify(updatedCart));
     setCartItems(updatedCart); // Update state to reflect changes
   
     Swal.fire({

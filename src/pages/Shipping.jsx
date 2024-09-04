@@ -27,17 +27,29 @@ const Shipping = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-  
+    
     const shippingAddress = { address, city, postalCode, country };
     localStorage.setItem("shippingAddress", JSON.stringify(shippingAddress));
     localStorage.setItem("paymentMethod", paymentMethod);
-
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Retrieve and filter out null values from cart items
+    const cartItems = JSON.parse(localStorage.getItem('cartitems')) || [];
+    const filteredCartItems = cartItems.filter(item => item !== null && item !== undefined);
   
     const orderData = {
       shippingAddress,
       paymentMethod,
-      cartItems,
+      orderItems: filteredCartItems.map(item => ({
+        name: item.name,
+        qty: item.quantity, // Assuming `quantity` is the key for quantity in cart items
+        image: item.image,
+        price: item.price,
+        product: item._id,
+        totalPrice:item.totalPrice,
+        quantity:item.quantity,
+        imageId:item.imageId,
+        description:item.description
+      })),
       // Add other necessary order details here
     };
   
@@ -52,6 +64,8 @@ const Shipping = () => {
       console.error("Error creating order:", error.response.data);
     }
   };
+  
+  
   
 
   return (
