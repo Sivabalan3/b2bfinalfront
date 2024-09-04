@@ -17,6 +17,7 @@ import Shopping from './pages/Shopping';
 import Messages from './pages/Messages';
 // import Chat from './pages/Chat';
 import Payments from './pages/Payments';
+import Cart from './pages/Cart';
 import PaymentsDetailsPage from './pages/PaymentDetails';
 import { AuthProvider } from './provider/AuthProvider';
 import Notifications from './pages/Notifications';
@@ -51,6 +52,7 @@ function App() {
         <Route path="/createproduct" element={<CreateProduct/>} />
         <Route path="/productlist" element={<ProductList/>} />
         <Route path="/setAvatar" element={<SetAvataor/>} />
+        <Route path="/myCarts" element={<Cart/>} />
 
         <Route path="/home" element={user?<Home />:<Login/>} />
         <Route path="/login" element={<Login />} />

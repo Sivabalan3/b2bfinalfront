@@ -87,38 +87,7 @@ export default function ChatContainer({
   }, [currentChat]);
 
   return (
-    // <>
-    //   {isLoaded && currentChat && (
-    //     <div className="grid grid-rows-[10%_80%_10%] gap-1 h-screen overflow-hidden md:grid-rows-[15%_70%_15%] sm:grid-rows-[12%_78%_10%]">
-    //       <div className="flex justify-between items-center px-4 bg-[#2f3136]">
-    //         <div className="flex items-center gap-2">
-    //           <div className="avatar">
-    //             <img
-    //               src={`data:image/svg+xml;base64,${currentChat.avatarImage}`}
-    //               alt="avatar"
-    //               className="h-10"
-    //             />
-    //           </div>
-    //           <div className="username">
-    //             <h3 className="text-white text-lg sm:text-base">{currentChat.username}</h3>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="chat-messages p-4 flex flex-col gap-3 overflow-y-auto bg-[#36393f] scrollbar-thin scrollbar-thumb-[#ffffff39] scrollbar-thumb-rounded">
-    //         {messages.map((message) => {
-    //           return (
-    //             <div ref={scrollRef} key={uuidv4()} className={`flex ${message.fromSelf ? 'justify-end' : 'justify-start'}`}>
-    //               <div className={`content max-w-[60%] sm:max-w-[80%] p-3 text-lg sm:text-base text-[#d1d1d1] rounded-lg overflow-wrap break-words ${message.fromSelf ? 'bg-[#4f04ff21]' : 'bg-[#9900ff20]'}`}>
-    //                 <p>{message.message}</p>
-    //               </div>
-    //             </div>
-    //           );
-    //         })}
-    //       </div>
-    //       <ChatInput handleSendMsg={handleSendMsg} />
-    //     </div>
-    //   )}
-    // </>
+
     <div className="border rounded-lg overflow-hidden shadow-lg">
       <div className="relative top-0 z-[-50] border-b border-gray-300 bg-white py-4 px-6 text-center text-sm text-gray-800 shadow-md">
         <h4 className="inline-block py-1 text-left text-lg font-sans font-semibold normal-case">

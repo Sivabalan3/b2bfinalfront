@@ -61,7 +61,7 @@ export default function Chat() {
   return (
     <>
       {/* <Container> */}
-        <div className="container1">
+        <div className="container1 mt-7">
           <Contacts
             currentUser={currentUser}
             changeChat={handleChatChange}

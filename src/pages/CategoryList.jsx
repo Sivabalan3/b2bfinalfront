@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Categories} from './Categories';
+import NavBar from "../components/Navbar"
 
 export const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -21,7 +22,9 @@ export const CategoryList = () => {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white rounded-lg shadow-md">
+    <>
+    <NavBar name={"Categories"} back={"home"} />
+    <div className="max-w-3xl mx-auto p-8 bg-white rounded-lg shadow-md mt-16 -z-50">
       <h2 className="text-2xl font-semibold text-green-400 mb-6">Categories</h2>
       {message && (
         <p className="mt-4 text-center text-sm font-medium text-red-600">
@@ -30,6 +33,7 @@ export const CategoryList = () => {
       )}
       <Categories categories={categories} /> 
     </div>
+    </>
   );
 };
 

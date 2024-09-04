@@ -10,11 +10,11 @@ export const Categories = ({ categories }) => {
 
   return (
     <>
-      <div className="grid gap-x-4 gap-y-4 grid-cols-1 p-2">
+      <div className="grid gap-x-4 gap-y-4 grid-cols-1 p-2 ">
         {categories.map((cat) => (
           <div
             key={cat._id}
-            className="bg-white shadow-md rounded-lg p-3 flex flex-col items-center"
+            className="bg-white -z-1 shadow-md rounded-lg p-3 flex flex-col items-center"
           >
             {cat.image && (
               <img

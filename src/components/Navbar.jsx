@@ -16,6 +16,7 @@ import {
   FaSearch,
   FaChevronLeft,
 } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
 import { AiFillEdit } from "react-icons/ai";
 import { IoPerson } from "react-icons/io5";
 import { LuLogOut } from "react-icons/lu";
@@ -64,10 +65,10 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
   const username = userObject.username || "N/A";
 
   return (
-    <div className="relative">
+    <div className="relative z-50">
       {/* Always Visible Header */}
       <div className="flex items-center justify-between p-1 bg-green-400 text-white fixed top-0 left-0 right-0 z-10">
-        <div className="flex items-center">
+        <div className="flex items-center z-50">
           <button onClick={toggleNav} className="text-xl relative bottom-4 left-2">
             {navOpen ? <FaTimes /> : <FaBars />}
           </button>
@@ -128,7 +129,7 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
         } transition-transform duration-300`}
         style={{ width: "75%" }}
       >
-        <ul className="space-y-4 mt-14">
+        <ul className="space-y-4 mt-14 z-30">
           {role === "admin" ? (
             <>
               {/* Admin Links */}
@@ -213,6 +214,10 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
               <li className="flex items-center">
                 <FaEnvelope className="mr-3" />
                 <Link to="/chat" className="hover:underline">Messages</Link>
+              </li>
+              <li className="flex items-center">
+                <FaCartShopping className="mr-3" />
+                <Link to="/myCarts" className="hover:underline">My Carts</Link>
               </li>
               <li className="flex items-center">
                 <FaBox className="mr-3" />
