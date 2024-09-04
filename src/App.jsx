@@ -40,6 +40,8 @@ import ProductList from './pages/ProductList'
 import Chat from './chatpages/Chat';
 import SetAvataor from './chatpages/SetAvatar';
 import Shipping from './pages/Shipping';
+import Discount from './pages/Discount';
+
 function App() {
   const user = true
 
@@ -55,6 +57,7 @@ function App() {
         <Route path="/setAvatar" element={<SetAvataor/>} />
         <Route path="/myCarts" element={<Cart/>} />
         <Route path="/shipping" element={<Shipping/>} />
+        <Route path="/discount" element={<Discount/>} />
 
         <Route path="/home" element={user?<Home />:<Login/>} />
         <Route path="/login" element={<Login />} />
