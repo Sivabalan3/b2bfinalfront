@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import { Button } from "../components/alt/Button";
 import { useNavigate } from 'react-router-dom';
-import { Backend_url } from '../constant';
 
 const customStyles = {
   content: {
@@ -19,20 +18,21 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const Cart = () => {
-  const Navigate = useNavigate();
+  const Navigate=useNavigate()
   const [cartItems, setCartItems] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
+    // Retrieve cart items from local storage
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     setCartItems(Array.isArray(cart) ? cart : []);
   }, []);
 
   const openModal = (product) => {
     setCurrentProduct(product);
-    setQuantity(1);
+    setQuantity(1); // Reset quantity to 1 when opening modal
     setIsOpen(true);
   };
 
@@ -41,38 +41,39 @@ const Cart = () => {
   };
 
   const handleSubmit = () => {
-    if (currentProduct) {
-      const orderedItem = {
-        _id: currentProduct._id, 
-        name: currentProduct.name,
-        description: currentProduct.description,
-        price: currentProduct.price,
-        brand: currentProduct.brand,
-        category: currentProduct.category,
-        quantity,
-        totalPrice: (currentProduct.price * quantity).toFixed(2), 
-      };
+    // Retrieve the current cart from local storage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
   
-      // Store the ordered item in local storage
-      localStorage.setItem('orderedItem', JSON.stringify(orderedItem));
+    // Update the selected product in the cart
+    const updatedCart = cart.map(item => {
+      if (item._id === currentProduct._id) {
+        return {
+          ...item,
+          quantity,
+          totalPrice: (currentProduct.price * quantity).toFixed(2),
+        };
+      }
+      return item;
+    });
   
-      // Show success message
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "SUCCESSFULLY SUBMITTED",
-        text: `Your request for ${currentProduct.name} has been updated.`,
-        showConfirmButton: false,
-        timer: 2500,
-      });
+    // Save updated cart to local storage
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setCartItems(updatedCart); // Update state to reflect changes
   
-      // Navigate to the shipping page
-      Navigate("/shipping");
-    }
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "SUCCESSFULLY SUBMITTED",
+      text: `Your request for ${currentProduct.name} has been updated.`,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+    closeModal();
+    Navigate("/shipping")
   };
   
-  
 
+  // Calculate the total amount
   const totalAmount = currentProduct ? (currentProduct.price * quantity).toFixed(2) : 0;
 
   return (
@@ -88,12 +89,13 @@ const Cart = () => {
               <li key={index} className="relative flex flex-col bg-gray-100 p-4 rounded-lg shadow-sm">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{item.name}</h3>
                 <img
-                  src={`${Backend_url}/api/image/${item.image.split('/').pop()}`}
+                  src={`http://localhost:5000/api/image/${item.image.split('/').pop()}`}
                   alt={item.name}
                   className="w-32 h-32 object-cover mb-4 rounded-md"
                 />
                 <p className="text-gray-700 mb-2">{item.description}</p>
                 <p className="text-gray-800 font-medium mb-2">Price: ${item.price}</p>
+                {/* <p className="text-gray-800 font-medium mb-2">Quantity: {item.quantity}</p> */}
                 <p className="text-gray-800 font-medium mb-2">Brand: {item.brand}</p>
                 <p className="text-gray-800 font-medium">Category: {item.category ? item.category.name : 'No category'}</p>
                 <Button

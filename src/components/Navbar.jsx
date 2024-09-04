@@ -166,7 +166,7 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
               </li>
               <li className="flex items-center">
                 <FaBox className="mr-3" />
-                <Link to="/orders" className="hover:underline">New Orders</Link>
+                <Link to="/sell1" className="hover:underline">New Orders</Link>
               </li>
               <li className="flex items-center">
                 <FaBox className="mr-3" />
