@@ -3,10 +3,10 @@ import ChatInput from "./ChatInput";
 import axios from "axios";
 import { recieveMessageRoute, sendMessageRoute } from "../chatutils/APIRoutes";
 import { v4 as uuidv4 } from "uuid";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserData } from "../chatredux/actions";
-import { Backend_url } from "../constant";
-
+import { NavLink } from "react-router-dom";
+import { FaRupeeSign } from "react-icons/fa";
 export default function ChatContainer({
   currentChat,
   isLoaded,
@@ -18,73 +18,80 @@ export default function ChatContainer({
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const scrollRef = useRef();
 
-  const handleSendMsg = async (msg, isFile) => {
-    if (isFile) {
-      await axios.post(
-        `${Backend_url}/upload`,
-        {
-          message: msg,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-    } else {
-      await axios.post(sendMessageRoute, {
-        from: currentUser._id,
-        to: currentChat._id,
-        message: msg,
-      });
+  // Handle sending message
+  const handleSendMsg = async (msg) => {
+    if (!currentUser || !currentChat) {
+      console.error("currentUser or currentChat is undefined.");
+      return;
+    }
+  
+    let messagePayload = {
+      from: currentUser._id,
+      to: currentChat._id,
+      message: msg,
+      role: currentUser.role,
+    };
+  
+    // Check if the admin is sending a payment link
+    if (currentUser.role === "admin" && msg.startsWith("finalamount")) {
+      messagePayload.message = `${msg} - Click to Pay`;
+    }
+  
+    try {
+      await axios.post(sendMessageRoute, messagePayload);
       socket.current.emit("send-msg", {
         to: currentChat._id,
         from: currentUser._id,
-        message: msg,
+        message: messagePayload.message,
       });
-      const msgs = [...messages];
-      msgs.push({ fromSelf: true, message: msg });
-      setMessages(msgs);
+      setMessages((prev) => [...prev, { fromSelf: true, ...messagePayload }]);
+    } catch (error) {
+      console.error("Failed to send message:", error);
     }
   };
+  
 
+  // Receive real-time messages
   useEffect(() => {
-    if (socket.current) {
+    if (socket?.current) {
       socket.current.on("msg-recieve", (msg, userData) => {
+        console.log("Message received:", msg);
         dispatch(setUserData(userData));
         setArrivalMessage({ fromSelf: false, message: msg });
       });
     }
-  }, []);
+  }, [socket, dispatch]);
 
+  // Add arrival message to messages
   useEffect(() => {
-    arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
+    if (arrivalMessage) {
+      setMessages((prev) => [...prev, arrivalMessage]);
+    }
   }, [arrivalMessage]);
 
+  // Scroll to the latest message
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Fetch all messages when currentChat changes
   useEffect(() => {
-    if (currentChat) {
-      const fetchData = async () => {
-        const response = await axios.post(recieveMessageRoute, {
-          from: currentUser._id,
-          to: currentChat._id,
-        });
-        setMessages(response.data);
+    if (currentChat && currentUser) {
+      const fetchMessages = async () => {
+        try {
+          const response = await axios.post(recieveMessageRoute, {
+            from: currentUser._id,
+            to: currentChat._id,
+          });
+          setMessages(response.data);
+          console.log("Messages fetched:", response.data);
+        } catch (error) {
+          console.error("Failed to fetch messages:", error);
+        }
       };
-      fetchData();
-
-      // Set up interval to fetch data every 2 seconds
-      // const intervalId = setInterval(() => {
-      fetchData();
-      // }, 2000); // 2 seconds interval
-
-      // Cleanup function to clear the interval when the component unmounts or if currentChat changes
-      // return () => clearInterval(intervalId);
+      fetchMessages();
     }
-  }, [currentChat]);
+  }, [currentChat, currentUser]);
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg">
@@ -95,44 +102,41 @@ export default function ChatContainer({
       </div>
 
       <div className="flex flex-col h-[80vh] bg-white">
-        <div className="flex-grow px-4 py-4 sm:px-8 sm:py-8 overflow-y-auto ">
-          <div className="chat-messages flex flex-col gap-3">
-            {messages.map((message) => (
-              <div
-                ref={scrollRef}
-                key={uuidv4()}
-                className={`flex ${
-                  message.fromSelf ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`content max-w-[80%] p-3 text-base  rounded-lg overflow-wrap break-words ${
-                    message.fromSelf
-                      ? "bg-[#1D4ED8] text-white rounded-[16px] rounded-tr-none "
-                      : "bg-[#E5E7EB] text-gray-800 rounded-[16px] rounded-tl-none"
-                  }`}
-                >
-                  <p>{message.message}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="flex-grow px-4 py-4 sm:px-8 sm:py-8 overflow-y-auto">
+        <div className="chat-messages flex flex-col gap-3">
+  {messages.map((message) => (
+    <div
+      ref={scrollRef}
+      key={uuidv4()}
+      className={`flex ${
+        message.fromSelf ? "justify-end" : "justify-start"
+      }`}
+    >
+      <div
+        className={`content max-w-[80%] p-3 text-base rounded-lg overflow-wrap break-words ${
+          message.fromSelf
+            ? "bg-[#1D4ED8] text-white rounded-[16px] rounded-tr-none"
+            : "bg-sky-300 text-gray-800 rounded-[16px] rounded-tl-none"
+        }`}
+      >
+        {/* Conditionally render the payment link only if the message contains "Click to Pay" */}
+        {message.message.includes("Click to Pay") ? (
+          <>
+            <p>{message.message.split(" - ")[0]}</p>
+            <NavLink to="/payments" className="text-white underline flex">
+              Click to Pay <FaRupeeSign className="w-[25px] h-[25px] mt-2 gap-1 text-amber-500"/>
+            </NavLink>
+          </>
+        ) : (
+          <p>{message.message}</p>
+        )}
+      </div>
+    </div>
+  ))}
+</div>
+
           <ChatInput handleSendMsg={handleSendMsg} />
         </div>
-
-        {/* <div className="flex items-center border-t border-gray-300 bg-white p-2 sm:p-4">
-          {/* <textarea
-          cols={1}
-          rows={1}
-          placeholder="Your Message"
-          className="mr-2 flex-1 resize-none whitespace-pre-wrap rounded-md bg-gray-100 text-sm py-2 px-3 text-gray-600 shadow-sm outline-none focus:ring-1 focus:ring-blue-500"
-        />
-        <button
-          className="h-10 px-4 py-2 bg-blue-700 text-white rounded-md text-sm font-medium shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
-        >
-          Send
-        </button> 
-        </div> */}
       </div>
     </div>
   );
