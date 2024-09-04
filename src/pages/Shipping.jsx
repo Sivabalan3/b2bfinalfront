@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import Axios
 import ProgressSteps from "../pages/ProgressSteps";
 import { Backend_url } from "../constant";
-import NavBar from "../components/Navbar";
 
 const Shipping = () => {
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
@@ -31,33 +30,29 @@ const Shipping = () => {
     const shippingAddress = { address, city, postalCode, country };
     localStorage.setItem("shippingAddress", JSON.stringify(shippingAddress));
     localStorage.setItem("paymentMethod", paymentMethod);
-
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
   
     const orderData = {
       shippingAddress,
       paymentMethod,
-      cartItems,
       // Add other necessary order details here
     };
   
     try {
-      await axios.post(`${Backend_url}/api/orders/create`, orderData, {
+      await axios.post(`${Backend_url}/api/orders`, orderData, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Ensure token is set correctly
         }
       });
       navigate("/chat");
     } catch (error) {
       console.error("Error creating order:", error.response.data);
+      // Handle error here (e.g., show a notification)
     }
   };
   
 
   return (
-    <>
-    <NavBar name={"shipping"} back={"categories"}/>
-    <div className="container mx-auto mt-20">
+    <div className="container mx-auto mt-10">
       <ProgressSteps step1 step2 />
       <div className="mt-8 flex justify-center items-center">
         <form onSubmit={submitHandler} className="w-full max-w-md p-4 bg-gray-100 rounded-lg shadow-md">
@@ -137,7 +132,6 @@ const Shipping = () => {
         </form>
       </div>
     </div>
-    </>
   );
 };
 

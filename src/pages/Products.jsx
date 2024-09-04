@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../components/Navbar';
-import { Backend_url } from '../constant';
 
 export const Products = () => {
   const { categoryId } = useParams();
@@ -12,7 +11,7 @@ export const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${Backend_url}/api/products?category=${categoryId}`);
+        const response = await axios.get(`http://localhost:5000/api/products?category=${categoryId}`);
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -36,7 +35,7 @@ export const Products = () => {
       <div className="grid gap-x-4 gap-y-4 grid-cols-1 p-2">
         {products.map(product => (
           <div key={product._id} className="bg-white shadow-md rounded-lg p-3">
-            <img src={`${Backend_url}/api/image/${product.image}`} alt={product.name} className="h-32 w-32 object-cover mb-2 rounded-md" />
+            <img src={`http://localhost:5000/api/image/${product.image}`} alt={product.name} className="h-32 w-32 object-cover mb-2 rounded-md" />
             <h3 className="text-lg font-semibold text-gray-800 mb-2">{product.name}</h3>
             <p className="text-sm text-gray-700">{product.description}</p>
             <p className="text-sm text-gray-700">Brand: {product.brand}</p>

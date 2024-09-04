@@ -1,7 +1,6 @@
 import { useState,/*  useEffect */ } from 'react';
 import axios from 'axios';
 import NavBar from '../components/Navbar';
-import { Backend_url } from '../constant';
 
 const CreateCategory = () => {
   const [name, setName] = useState('');
@@ -33,7 +32,7 @@ const CreateCategory = () => {
     }
 
     try {
-      const response = await axios.post(`${Backend_url}/api/category`, formData, {
+      const response = await axios.post('http://localhost:5000/api/category', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setMessage(response.data.message);
