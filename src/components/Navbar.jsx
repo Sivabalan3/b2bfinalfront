@@ -144,8 +144,12 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
                 <Link to="/home" className="hover:underline">Home</Link>
               </li>
               <li className="flex items-center">
+                <FaHome className="mr-3" />
+                <Link to="/createcategory" className="hover:underline">Create Category</Link>
+              </li>
+              <li className="flex items-center">
                 <FaEdit className="mr-3" />
-                <Link to="/add-products" className="hover:underline">Add Products</Link>
+                <Link to="/createproduct" className="hover:underline">Add Products</Link>
               </li>
               <li className="flex items-center">
                 <FaBox className="mr-3" />
