@@ -29,10 +29,11 @@ export const AuthProvider = ({ children }) => {
       setRole(user.role);
   
       // Redirect based on user role
-      if (user.role === 'user' || user.role === 'admin' || user.role === 'superadmin') {
+      if (user.role === 'user' || user.role === 'admin' || user.role === 'seller') {
         console.log("Navigating to /home");
         navigate('/home');
       }
+      
     } catch (error) {
       console.error('Login failed', error);
     }

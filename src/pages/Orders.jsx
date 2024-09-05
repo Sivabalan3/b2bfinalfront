@@ -5,8 +5,15 @@ import { Backend_url } from '../constant';
 
 export const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const [role, setRole] = useState("user"); // Default role is user
 
   useEffect(() => {
+    // Fetch user role from local storage
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.role) {
+      setRole(user.role);
+    }
+
     const fetchOrders = async () => {
       try {
         const response = await axios.get(`${Backend_url}/api/orders`);
@@ -62,7 +69,7 @@ export const Orders = () => {
                   className={`text-white font-medium rounded-full h-10 text-sm px-5 py-2 mr-2 ${
                     order.isDelivered ? 'bg-green-500' : 'bg-gray-400'
                   }`}
-                  disabled={order.isDelivered}
+                  disabled={order.isDelivered || role !== 'admin'} // Button disabled for non-admin users
                 >
                   {order.isDelivered ? "Delivered" : "Mark as Delivered"}
                 </button>
