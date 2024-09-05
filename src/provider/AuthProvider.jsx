@@ -41,20 +41,24 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password, contactNo) => {
     try {
-      const response = await axios.post(`${Backend_url}/api/auth/register`, { username, email, password, contactNo });
+      const response = await axios.post(
+        `${Backend_url}/api/auth/register`, 
+        { username, email, password, contactNo }, 
+        { withCredentials: true }
+      );
+  
       const { user } = response.data;
-
-      // Store user data
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem("chat-app-user", JSON.stringify(user));
       setUser(user);
       setRole(user.role);
-
+  
       navigate('/login');
     } catch (error) {
       console.error('Registration failed', error);
     }
   };
+  
 
   const logout = async () => {
     try {

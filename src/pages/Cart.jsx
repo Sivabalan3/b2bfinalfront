@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import { Button } from "../components/alt/Button";
 import { useNavigate } from 'react-router-dom';
+import { Backend_url } from '../constant';
 
 const customStyles = {
   content: {
@@ -88,7 +89,7 @@ const Cart = () => {
               <li key={index} className="relative flex flex-col bg-gray-100 p-4 rounded-lg shadow-sm">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{item.name}</h3>
                 <img
-                  src={`http://localhost:5000/api/image/${item.image.split('/').pop()}`}
+                  src={`${Backend_url}/api/image/${item.image.split('/').pop()}`}
                   alt={item.name}
                   className="w-32 h-32 object-cover mb-4 rounded-md"
                 />

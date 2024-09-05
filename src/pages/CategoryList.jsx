@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Categories} from './Categories';
 import NavBar from "../components/Navbar"
+import { Backend_url } from '../constant';
 
 export const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -10,7 +11,7 @@ export const CategoryList = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/categories');
+        const response = await axios.get(`${Backend_url}/api/categories`);
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
