@@ -25,14 +25,11 @@ export const Categories = ({ categories }) => {
               />
             )}
             <h3 className="text-lg font-semibold text-gray-800 mb-2">{cat.name}</h3>
-            <p className="text-sm text-gray-700">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </p>
             <button
               onClick={() => handleCategoryClick(cat.name)} // Set category name in localStorage on click
               className="bg-green-400 text-white font-semibold py-2 px-4 rounded-md mt-2"
             >
-              GO TO
+              View Products
             </button>
           </div>
         ))}

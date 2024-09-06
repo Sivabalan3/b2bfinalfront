@@ -5,17 +5,17 @@ import {
   FaTimes,
   FaBell,
   FaHome,
-  FaList,
   FaEdit,
   FaEnvelope,
   FaBox,
-  FaHeart,
+  FaHistory,
   FaShoppingCart,
   FaShieldAlt,
   FaFileAlt,
   FaSearch,
   FaChevronLeft,
 } from "react-icons/fa";
+import { FaTruckFast } from "react-icons/fa6";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { AiFillEdit } from "react-icons/ai";
 import { IoPerson } from "react-icons/io5";
@@ -164,7 +164,7 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaBox className="mr-3" />
+                <FaTruckFast className="mr-3" />
                 <Link to="/ship" className="hover:underline">
                   Ship with B2B
                 </Link>
@@ -186,27 +186,34 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
           {role === "user" && (
             <>
               <li className="flex items-center">
-            <FaBox className="mr-3" />
-            <Link to="/myCarts" className="hover:underline">
-              My Carts 
-            </Link>
-          </li>
+                <FaBox className="mr-3" />
+                <Link to="/myCarts" className="hover:underline">
+                  My Carts
+                </Link>
+              </li>
+
+              <li className="flex items-center">
+                <FaBox className="mr-3" />
+                <Link to="/myorders" className="hover:underline">
+                  Track Order
+                </Link>
+              </li>
             </>
           )}
 
           {/* Common Links */}
           <li className="flex items-center">
-            <FaBox className="mr-3" />
+            <FaHistory className="mr-3" />
             <Link to="/his" className="hover:underline">
               Order History
             </Link>
           </li>
           <li className="flex items-center">
-                <FaBox className="mr-3" />
-                <Link to="/orders" className="hover:underline">
-                  {role==="user" ?"My Orders" : "New Orders"}
-                </Link>
-              </li>
+            <FaBox className="mr-3" />
+            <Link to="/orders" className="hover:underline">
+              {role === "user" ? "My Orders" : "New Orders"}
+            </Link>
+          </li>
           <li className="flex items-center">
             <FaEnvelope className="mr-3" />
             <Link to="/chat" className="hover:underline">
@@ -214,12 +221,6 @@ const NavBar = ({ name, back, isHome, isOrder }) => {
             </Link>
           </li>
 
-          <li className="flex items-center">
-            <FaBox className="mr-3" />
-            <Link to="/myorders" className="hover:underline">
-              Track Order
-            </Link>
-          </li>
           <li className="flex items-center">
             <FaShoppingCart className="mr-3" />
             <Link to="/payments" className="hover:underline">

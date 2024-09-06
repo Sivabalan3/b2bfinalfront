@@ -1,47 +1,94 @@
-import { MdOutlineLocalShipping } from "react-icons/md";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import NavBar from "../components/Navbar";
+import { Backend_url } from '../constant';
+
 export const History = () => {
+  const [orders, setOrders] = useState([]);
+  const [role, setRole] = useState("user"); // Default role is user
+
+  useEffect(() => {
+    // Fetch user role from local storage
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.role) {
+      setRole(user.role);
+    }
+
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(`${Backend_url}/api/orders`);
+        setOrders(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const handleDeliveryUpdate = async (orderId) => {
+    try {
+      const response = await axios.put(`${Backend_url}/api/orders/${orderId}/deliver`);
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId ? { ...order, isDelivered: true } : order
+        )
+      );
+      console.log(`Order ${orderId} delivery status updated to true`);
+    } catch (error) {
+      console.error("Error updating delivery status:", error);
+    }
+  };
+
+  // Filter orders to show only delivered ones
+  const deliveredOrders = orders.filter(order => order.isDelivered);
+  
+
   return (
     <>
-    <NavBar back={"home"} />
-    <div className='flex items-center '>
-    <MdOutlineLocalShipping className='text-4xl m-5'/>
-    <p className='font-bold  underline underline-offset-8  '> Shippment History </p>
-     </div>
+      <NavBar back={"home"} />
+      <div className="max-w-6xl mx-auto mt-20">
+        {deliveredOrders.length === 0 ? (
+          <p className="text-center text-xl font-semibold text-gray-600">
+            No delivered orders yet
+          </p>
+        ) : (
+          deliveredOrders.map((order) => (
+            <div key={order._id} className="border-solid border-2 border-gray-300 p-5 m-5 rounded-lg">
+              <h2 className="text-xl font-semibold">Order ID: {order._id}</h2>
+              <p className="text-gray-600 mt-2">Address: {order.shippingAddress.address}</p>
+              <p className="text-gray-600">City: {order.shippingAddress.city}</p>
+              <p className="text-gray-600">Postal Code: {order.shippingAddress.postalCode}</p>
+              <p className="text-gray-600">Country: {order.shippingAddress.country}</p>
+              <p className="text-gray-600 mt-2">Payment Method: {order.paymentMethod}</p>
+              <p className="text-gray-600">Total Price: ${order.totalPrice}</p>
+              <p className="text-gray-600">Created At: {new Date(order.createdAt).toLocaleDateString()}</p>
+              <p className="text-gray-600">Updated At: {new Date(order.updatedAt).toLocaleDateString()}</p>
 
-
-<div className='flex space-x-6  p-1 shadow-xl'>
-     <div>
-    <h1 className='text-lg font-bold ml-3 mt-3'>Fashion Factory</h1>
-    <p className='ml-3'>Ladies Kurti 1 Piece From Chennai<br/> To 
-        Mumbai <br/> Courier
-    </p>
-
-     </div>
-    
-     <button type="button" className="text-white bg-green-500 hover:bg-blue-800 
-     focus:ring-4 focus:ring-blue-300 font-medium rounded-full h-10 mt-10 text-sm px-5 py-2 me-2
-      mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">VIEW</button>
-     </div>
-
-
-     <div className='flex space-x-6 shadow-xl p-1'>
-     <div>
-    <h1 className='text-lg font-bold ml-3 mt-3'>Prakash industry</h1>
-    <p className='ml-3'>Paper Cups 5 set From Chennai<br/> To 
-        Mumbai <br/> Part Truck
-    </p>
-
-     </div>
-    
-     <button type="button" className="text-white bg-green-500 hover:bg-blue-800 
-     focus:ring-4 focus:ring-blue-300 font-medium rounded-full h-10 mt-10 text-sm px-5 py-2 me-2
-      mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">VIEW</button>
-
-
-      
-     </div>
-     
+              {/* Status Buttons */}
+              <div className="mt-4">
+                <button
+                  onClick={() => handleDeliveryUpdate(order._id)}
+                  className={`text-white font-medium rounded-full h-10 text-sm px-5 py-2 mr-2 ${
+                    order.isDelivered ? 'bg-green-500' : 'bg-gray-400'
+                  }`}
+                  disabled={order.isDelivered || role !== 'seller'}
+                >
+                  {order.isDelivered ? "Delivered" : "Mark as Delivered"}
+                </button>
+                <button
+                  className={`text-white font-medium rounded-full h-10 text-sm px-5 py-2 ${
+                    order.isPaid ? 'bg-blue-500' : 'bg-gray-400'
+                  }`}
+                  disabled={order.isPaid}
+                >
+                  Paid
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </>
-  )
-}
+  );
+};

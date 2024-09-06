@@ -6,6 +6,7 @@ import { Backend_url } from "../constant";
 const CreateProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [productId, setProductId] = useState("");
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
   const [brand, setBrand] = useState("");
@@ -35,6 +36,7 @@ const CreateProduct = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", price);
+    formData.append("productId", productId);
     formData.append("quantity", quantity);
     formData.append("description", description);
     formData.append("brand", brand);
@@ -55,6 +57,7 @@ const CreateProduct = () => {
       setMessage(response.data.message);
       setName("");
       setPrice("");
+      setProductId(""),
       setQuantity("");
       setDescription("");
       setBrand("");
@@ -94,6 +97,18 @@ const CreateProduct = () => {
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-400 focus:border-green-400 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+            productId:
+            </label>
+            <input
+              type="number"
+              value={productId}
+              onChange={(e) => setProductId(e.target.value)}
               required
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-400 focus:border-green-400 sm:text-sm"
             />
