@@ -1,6 +1,8 @@
-import { SERVER_URL } from "./globalEnv";
+// import { SERVER_URL } from "./globalEnv";
 
-export const host ="https://saib2b.onrender.com";
+export const host ="https://saib2b.onrender.com";  // for render     
+
+// export const host ="http://localhost:5000"; // for localhost
 export const loginRoute = `${host}/api/auth/login`;
 export const registerRoute = `${host}/api/auth/register`;
 export const logoutRoute = `${host}/api/auth/logout`;

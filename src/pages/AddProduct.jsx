@@ -9,6 +9,7 @@ const AddProduct = () => {
     image: null,
     name: '',
     price: '',
+    productId:'',
     quantity: '',
     description: '',
     brand: ''
@@ -38,6 +39,7 @@ const AddProduct = () => {
       const formData = new FormData();
       formData.append('name', product.name);
       formData.append('price', product.price);
+      formData.append('price', product.productId);
       formData.append('quantity', product.quantity);
       formData.append('description', product.description);
       formData.append('brand', product.brand);
@@ -103,6 +105,7 @@ const AddProduct = () => {
               required
             />
           </div>
+          
 
           <div>
             <label htmlFor="quantity" className="block text-sm font-medium">Quantity</label>

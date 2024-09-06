@@ -33,7 +33,7 @@ export default function ChatContainer({
     };
   
     // Check if the admin is sending a payment link
-    if (currentUser.role === "admin" && msg.startsWith("finalamount")) {
+    if (currentUser.role === "seller" && msg.startsWith("finalamount")) {
       messagePayload.message = `${msg} - Click to Pay`;
     }
   

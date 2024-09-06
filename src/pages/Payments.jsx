@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "../components/alt/View";
 import { Text } from "../components/alt/Text";
 import NavBar from "../components/Navbar";
@@ -6,12 +6,33 @@ import { paymentMethods } from "../components/data/IconList";
 import { debitMethods } from "../components/data/IconList";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; 
+import { Backend_url } from "../constant";
+
 
 const PaymentPage = () => {
   const navigate = useNavigate();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [selectedPaymentBank, setSelectedPaymentBank] = useState("");
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [totalPrice, setTotalPrice] = useState("");
+  const [product, setProduct] = useState(null); // To store product details
+
+  // Fetch product details when the component mounts
+  useEffect(() => {
+    const storedProductId = JSON.parse(localStorage.getItem("productId"));
+    if (storedProductId) {
+      axios
+        .get(`${Backend_url}/api/products/${storedProductId}`)
+        .then((response) => {
+          setProduct(response.data); // Store product details
+          setTotalPrice(response.data.price); // Set the product price in state
+        })
+        .catch((error) => {
+          console.error("Error fetching product details:", error);
+        });
+    }
+  }, []);
 
   const handleSelectMethod = (method) => {
     setSelectedMethod(method);
@@ -27,7 +48,7 @@ const PaymentPage = () => {
       if (result.isConfirmed) {
         Swal.fire({
           title: "Confirmed!",
-          text: `Your payment has done with ${method}`,
+          text: `Your payment has been done with ${method}`,
           icon: "success",
         });
         navigate("/paymentdata");
@@ -83,10 +104,16 @@ const PaymentPage = () => {
       <NavBar name={"payments"} back={"messages/1"} />
       <View className="p-4 mt-16">
         {/* Payment Information Card */}
-        <View className="bg-white shadow-md rounded-lg p-2 mb-2 flex - flex-col">
+        <View className="bg-white shadow-md rounded-lg p-2 mb-2 flex flex-col">
           <Text className="text-xl font-bold mb-2">Payment Information</Text>
-          <Text className="text-gray-600 mb-1">Registration Amount: ₹1000</Text>
-          <Text className="text-gray-600">GST (18%): ₹180</Text>
+          {/* Display product price if product is loaded */}
+          {product ? (
+            <Text className="text-gray-600 mb-1">
+              Registration Amount: {product.price} + 40 Delivery Charges
+            </Text>
+          ) : (
+            <Text>Loading product details...</Text>
+          )}
         </View>
 
         {/* Payment Method Selection Card */}
@@ -113,7 +140,6 @@ const PaymentPage = () => {
                     alt={method.name}
                     className="w-10 h-10"
                   />
-
                   <Text className="font-medium text-xs text-left">
                     {method.name}
                   </Text>
